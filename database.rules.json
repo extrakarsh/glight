@@ -1,0 +1,65 @@
+{
+  "rules": {
+    ".read": "auth != null",
+    "poles": {
+      "$poleId": {
+        ".write": "auth != null",
+        ".validate": "newData.hasChildren(['lat', 'lng', 'status', 'bulbType']) || newData.hasChild('status')",
+        "lat": {
+          ".validate": "newData.isNumber()"
+        },
+        "lng": {
+          ".validate": "newData.isNumber()"
+        },
+        "status": {
+          ".validate": "newData.isString() && (newData.val() == 'WORKING' || newData.val() == 'FUSED' || newData.val() == 'BURNING_DAYTIME')"
+        },
+        "lastMaintenanceDate": {
+          ".validate": "newData.isNumber() || !newData.exists()"
+        },
+        "bulbType": {
+          ".validate": "newData.isString()"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "complaints": {
+      "$complaintId": {
+        ".write": "auth != null",
+        ".validate": "newData.hasChildren(['id', 'poleId', 'reportedStatus', 'status', 'timestamp'])",
+        "id": {
+          ".validate": "newData.isString() && newData.val() == $complaintId"
+        },
+        "poleId": {
+          ".validate": "newData.isString()"
+        },
+        "reportedStatus": {
+          ".validate": "newData.isString() && (newData.val() == 'WORKING' || newData.val() == 'FUSED' || newData.val() == 'BURNING_DAYTIME')"
+        },
+        "status": {
+          ".validate": "newData.isString() && (newData.val() == 'SUBMITTED' || newData.val() == 'ASSIGNED' || newData.val() == 'FIXED')"
+        },
+        "timestamp": {
+          ".validate": "newData.isNumber()"
+        },
+        "reporterId": {
+          ".validate": "newData.isString() || !newData.exists()"
+        },
+        "aiTags": {
+          ".validate": "newData.isString() || !newData.exists()"
+        },
+        "aiSummary": {
+          ".validate": "newData.isString() || !newData.exists()"
+        },
+        "lastUpdated": {
+          ".validate": "newData.isNumber() || !newData.exists()"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    }
+  }
+}
